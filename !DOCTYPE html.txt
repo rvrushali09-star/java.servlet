@@ -1,0 +1,972 @@
+PRACTICAL NO =01
+Aim:-create a simple calculator application using servlet.
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <form action="CalculateServlet" method="post">
+
+        Enter First Number:
+        <input type="text" name="txtN1"><br><br>
+
+        Enter Second Number:
+        <input type="text" name="txtN2"><br><br>
+
+        Select Operation:<br><br>
+
+        <input type="radio" name="opr" value="+"> ADDITION<br>
+        <input type="radio" name="opr" value="-"> SUBTRACTION<br>
+        <input type="radio" name="opr" value="*"> MULTIPLICATION<br>
+        <input type="radio" name="opr" value="/"> DIVISION<br><br>
+
+        <input type="submit" value="Calculate">
+
+    </form>
+
+</body>
+</html>
+
+CalculateServlet.java-
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CalculateServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        double n1 = Double.parseDouble(
+                request.getParameter("txtN1"));
+
+        double n2 = Double.parseDouble(
+                request.getParameter("txtN2"));
+
+        double result = 0;
+
+        String opr = request.getParameter("opr");
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        try (PrintWriter out = response.getWriter()) {
+
+            if (opr.equals("+")) {
+                result = n1 + n2;
+            }
+
+            if (opr.equals("-")) {
+                result = n1 - n2;
+            }
+
+            if (opr.equals("*")) {
+                result = n1 * n2;
+            }
+
+            if (opr.equals("/")) {
+                if (n2 != 0) {
+                    result = n1 / n2;
+                } else {
+                    out.println("<h1>Cannot divide by zero</h1>");
+                    return;
+                }
+            }
+
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet CalculateServlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+
+            out.println("<h1>Result = " + result + "</h1>");
+
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+}
+
+
+PRACTICAL NO=02
+Aim:-Create a simple servlrt application to find entered number is Even or Odd.
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Even Odd Application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <form action="EvenODDServlet" method="post">
+
+        Enter The Number:
+        <input type="text" name="txtN1">
+        <br><br>
+
+        <input type="submit" value="Check">
+
+    </form>
+
+</body>
+</html>
+
+EvenODDServlet.java-
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class EvenODDServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int n1 = Integer.parseInt(
+                request.getParameter("txtN1"));
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        try (PrintWriter out = response.getWriter()) {
+
+            if (n1 % 2 == 0) {
+                out.println("<h1>Number is Even: " + n1 + "</h1>");
+            } else {
+                out.println("<h1>Number is Odd: " + n1 + "</h1>");
+            }
+
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Even Odd Servlet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h2>Servlet EvenODD at "
+                    + request.getContextPath() + "</h2>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+}
+
+
+PRACTICAL NO=03
+Aim :- Create a simple application to find factorial of entered number.
+
+index.html-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factorial App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <form action="factorial" method="post">
+        Enter the number <input type="text" name="txtN1"><br>
+        <input type="submit" value="Check">
+    </form>
+</body>
+</html>
+
+Factorial.java-
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "Factorial", urlPatterns = {"/factorial"})
+public class factorial extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        int n1 = Integer.parseInt(request.getParameter("txtN1"));
+        response.setContentType("text/html;charset=UTF-8");
+        
+        try (PrintWriter out = response.getWriter()) {
+            int factorial = 1;
+            for (int i = 1; i <= n1; i++) {
+                factorial = factorial * i;
+            }
+
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet factorial</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Factorial of " + n1 + " is: " + factorial + "</h1>");
+            out.println("<h1>Servlet factorial at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+}
+
+
+PRACTICAL NO=04
+Aim : Create a servlet for a login page If the username and password are correct then it says message "Hello <Username>" else a message "login failed".
+
+index.html
+<!DOCTYPE html>
+<html>
+<body>
+    <form action="login" method="post">
+        Username : <input type="text" name="User"><br>
+        Password : <input type="text" name="Pass"><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+login.java-
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet(name = "login", urlPatterns = {"/login"})
+public class login extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        
+        try (PrintWriter out = response.getWriter()) {
+            // Logic 1
+            String s = request.getParameter("User");
+            String s1 = request.getParameter("Pass");
+
+            // Logic 2
+            if (s.equals("admin") && s1.equals("admin123")) {
+                out.println("Hello... login Successful... " + s);
+            } else {
+                out.println("Error... login failed...");
+            }
+        }
+    }
+}
+
+PRACTICAL NO=05
+Aim:- Create a registration Servlet in java using JDBC. Accept the details such as username, password, Email & country from the user HTML form & store the registration details in the databases.
+
+index.html
+<html>
+<body>
+<form action="RegistrationServlet" method="post">
+<H1>Welcome to Registration Page</H1>
+Enter User Name <input type="text" name="txtUid"><br>
+Enter Password <input type="password" name="txtPass"><br>
+Enter Email <input type="text" name="txtEmail"><br>
+Enter Country <input type="text" name="txtCon"><br>
+<input type="reset">
+<input type="submit" value="REGISTER">
+</form>
+</body>
+</html>
+
+logic 1-
+        String id = request.getParameter("txtUid");
+        String ps = request.getParameter("txtPass");
+        String em = request.getParameter("txtEmail");
+        String co = request.getParameter("txtCon");
+
+logic 2-
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/registration","root","root123");
+            PreparedStatement pst = con.prepareStatement("Insert into User values(?,?,?,?)");
+            pst.setString(1, id);
+            pst.setString(2, ps);
+            pst.setString(3, em);
+            pst.setString(4, co);
+            int row = pst.executeUpdate();
+            out.println("<h1>" + row + " Inserted Successfullyyy </h1>");
+        } catch (Exception e) {
+            out.println(e);
+        }
+    }
+}
+#Create Database : registration 
+with table : user
+fields are:-username,password,email,country.
+1]Add library
+2]Add java connector "j-connector" in project
+
+
+PRACTICAL N0=06
+Aim :- Using Request Dispatcher Interface create a Servlet which will validate the Password entered by the user if the user has entered "Servlet" as Password, then he will be forwarded to welcome servlet else the user will stay on the index.html page & error message will be displayed.
+
+index.html
+<html>
+<body>
+<form action="login" method="Post">
+Enter the Username <input type="text" name="Uid"><br>
+Enter the Password <input type="Password" name="Pass"><br>
+Enter the Confirm Password <input type="text" name="cPass"><br>
+<input type="submit" value="Login">
+</form>
+</body>
+</html>
+
+logic.java 
+logic 1
+        String s1 = request.getParameter("Uid");
+        String s2 = request.getParameter("Pass");
+        String s3 = request.getParameter("cPass");
+
+        
+        if  s2.equals(s3)) {
+            RequestDispatcher rd1 = request.getRequestDispatcher("WELCOME");
+            rd1.forward(request, response);
+        } 
+ else {
+            RequestDispatcher rd2 = request.getRequestDispatcher("ERROR");
+            rd2.include(request, response); 
+    }
+
+Welcome.java
+outprintln("Welcome user");
+
+Error.java
+outprintln("Error");
+
+
+PRACTICAL N0=07
+Aim :- Create a Servlet that uses Cookies to Store number of times a user has visited servlet.
+
+package servlet;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+/**
+*
+@auther user
+@WebServlet(name = "firstCookieServlet", urlPatterns = {"/firstCookieServlet"})
+public class firstCookieServlet extends HttpServlet {
+/**
+*process request for both HTTP
+<code>GET</code>and<code>POST</code>
+*methods
+else{
+heading="Welcome back to this page";
+Integer oldCounter=
+(Integer) mySession.getAttribute("counter");
+if (oldCounter != null){
+counter = new Integer (oldCounter.intvalue() + 1);
+}
+ 
+mySession.setAttribute("counter", counter);
+out.println("<html><head><title>Displaying Session Details</title></head><body>");
+out.println("<h3>" + heading + "</h3><br>");
+out.println("<b> SESSION ID: </b>" + mySession.getId() + "<br>");
+out.println("<b> Creation Time of the Session: </b>" + new Date(mySession.getCreationTime()) + "<br>");
+out.println("<b> Time of Last Access: </b>" + new Date(mySession.getLastAccessedTime()) + "<br><br>");
+out.println((counter == 1) ? " time" : " times");
+out.println("</body></html>");
+}finally{
+ out.close();
+}
+}
+}
+
+PRACTICAL NO=08
+Aim : Create a Servlet demonstrating use of Session creation and destruction. Also check whether user has visited this page first time or has visited earlier also using Sessions.
+
+
+package servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet(name = "DisplaySessionDetailsServlet", urlPatterns = {"/DisplaySessionDetailsServlet"})
+public class DisplaySessionDetailsServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        HttpSession mySession = request.getSession(true);
+        String heading;
+        Integer counter = new Integer(0);
+        try {
+            if (mySession.isNew()) {
+                heading = "This is the first time you are visiting this page";
+            }
+            else {
+                heading = "Welcome back to this Page";
+                Integer oldCounter = (Integer) mySession.getAttribute("counter");
+                if (oldCounter != null) {
+                    counter = new Integer(oldCounter.intValue() + 1);
+                }
+            }
+            mySession.setAttribute("counter", counter);
+            out.println("<html><head><title>Displaying Session Details</title></head><body>");
+            out.println("<h3>" + heading + "</h3><br>");
+            out.println("<b>SESSION ID:</b>" + mySession.getId() + "<br>");
+            out.println("<b>Creation Time of the Session:</b>" + new Date(mySession.getCreationTime()) + "<br>");
+            out.println("<b>Time of Last Access:</b>" + new Date(mySession.getLastAccessedTime()) + "<br><br>");
+            out.println("You have visited this page " + (++counter));
+            out.println((counter == 1) ? " time" : " times");
+            out.println("</body></html>");
+        } finally {
+            out.close();
+        }
+    }
+}
+
+
+PRACTICAL NO=09
+Aim : - Develop Simple Servlet Question Answer Application using Database.
+
+index.html
+<html>
+<body>
+<form action="Quizz" method="Post">
+
+Q1> What is 2+2 ? <br>
+<input type="radio" name="q1" value="2">2<br>
+<input type="radio" name="q1" value="4">4<br>
+<input type="radio" name="q1" value="6">6<br>
+
+Q2> What is a fruit? <br>
+<input type="radio" name="q2" value="apple">apple<br>
+<input type="radio" name="q2" value="Carrot">Carrot<br>
+<input type="radio" name="q2" value="tomato">tomato<br>
+
+Q3> Which is the animal ? <br>
+<input type="radio" name="q3" value="lion">lion<br>
+<input type="radio" name="q3" value="Crow">Crow<br>
+<input type="radio" name="q3" value="eagle">eagle<br>
+
+<input type="Submit" value="Check">
+
+</form>
+</body>
+</html>
+
+Quizz.java
+logic 1:-
+int Correct = 0; incorrect = 0;
+String S1 = request.getParameter("q1");
+String S2 = request.getParameter("q2");
+String S3 = request.getParameter("q3");
+
+logic 2:-
+if (S1.equals("4"))
+    Correct ++;
+else
+    incorrect ++;
+
+if (S2.equals("apple"))
+    Correct ++;
+else
+    incorrect ++;
+
+if (S3.equals("lion"))
+    Correct ++;
+else
+    incorrect;
+
+out.println("Correct :" + Correct + "Incorrect :" + incorrect);
+
+PRACTICAL NO=10
+Aim:- Develop simple JSP application to display values obtained from user of intrinsic  objects.
+ 
+intrin jsp
+<%@ Page ContentType="text/html" PageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>JSP Page</title>
+</head>
+<body>
+    <h1>Use of Intrinsic Objects in JSP</h1>
+    
+    <h1>Request Object</h1>
+    Query String <%= request.getQueryString() %><br>
+    Context Path <%= request.getContextPath() %><br>
+    Remote Host <%= request.getRemoteHost() %><br>
+    
+    <h1>Response Object</h1>
+    Character Encoding Type <%= response.getCharacterEncoding() %><br>
+    Content Type <%= response.getContentType() %><br>
+    Locale <%= response.getLocale() %><br>
+    
+    <h1>Session Object</h1>
+    ID <%= session.getId() %><br>
+    Creation Time <%= new java.util.Date(session.getCreationTime()) %><br>
+    Last Access Time <%= new java.util.Date(session.getLastAccessedTime()) %><br>
+</body>
+</html>
+
+
+PRACTICAL NO=11
+Aim:-Create a simple calculator application using JSP.
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo Supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form action="Calculate.jsp" method="post">
+Enter First Number : <input type="text" name="txtn1"><br>
+Enter Second Number : <input type="text" name="txtn2"><br>
+Select An operation : <br>
+<input type="radio" name="opr" value="+"> Addition <br>
+<input type="radio" name="opr" value="-"> Subtraction <br>
+<input type="radio" name="opr" value="*"> Multiplication <br>
+<input type="radio" name="opr" value="/"> Division <br>
+<input type="submit" value="Calculate">
+</form>
+</body>
+</html>
+
+Calculate.jsp
+<%--
+Document : Calculate
+Created on : Aug 31, 2026, 9:31:42 AM
+Author : User
+--%>
+
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+</head>
+<body>
+<%
+double n1 = Double.parseDouble(request.getParameter("txtn1"));
+double n2 = Double.parseDouble(request.getParameter("txtn2"));
+String opr = request.getParameter("opr");
+double result = 0;
+if (opr.equals("+")) {
+    result = n1 + n2;
+}
+if (opr.equals("-")) {
+    result = n1 - n2;
+}
+if (opr.equals("*")) {
+    result = n1 * n2;
+}
+if (opr.equals("/")) {
+    result = n1 / n2;
+}
+out.println("<h1>Result = " + result + "</h1>");
+%>
+</body>
+</html>
+
+
+PRACTICAL NO=12
+Aim:- Create a registration and login JSP application to register and authenticate the user using JDBC.
+
+index.html
+<html>
+<head>
+<title>New User Registration Page</title>
+</head>
+<body>
+<form action="Registration.jsp">
+<h1>New User Registration Page</h1>
+Enter Name <input type="text" name="txtName"><br>
+Enter Password <input type="password" name="txtPass1"><br>
+Re-Enter Password <input type="password" name="txtPass2">
+<br>
+Enter Email <input type="text" name="txtEmail"><br>
+Enter Country Name <select name="txtCon">
+<option>India</option>
+<option>France</option>
+<option>England</option>
+<option>Argentina</option>
+</select><br>
+<input type="submit" value="REGISTER"><input type="reset">
+</form>
+</body>
+</html>
+
+Registration.jsp
+<%@ page contentType="text/html" import="java.sql.*" %>
+<html><body>
+<h1>Registration JSP Page</h1>
+<%
+String uname = request.getParameter("txtName");
+String pass1 = request.getParameter("txtPass1");
+String pass2 = request.getParameter("txtPass2");
+String email = request.getParameter("txtEmail");
+String ctry = request.getParameter("txtCon");
+if (pass1.equals(pass2))
+{
+try
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/logindb123", "root", "root123");
+PreparedStatement stmt = con.prepareStatement("insert into user values (?, ?, ?, ?)");
+stmt.setString(1, uname);
+stmt.setString(2, pass1);
+stmt.setString(3, email);
+stmt.setString(4, ctry);
+int row = stmt.executeUpdate();
+if (row == 1) { out.println("Registration Successful"); }
+else {
+out.println("Registration FFFAAAILLL!!!");
+%>
+<jsp:include page="Register.html"></jsp:include>
+<%
+}
+} catch (Exception e) { out.println(e); }
+}
+else
+{
+out.println("<h1>Password Mismatch</h1>");
+%>
+<jsp:include page="Registration.html"></jsp:include>
+<%
+}
+%>
+</body>
+</html>
+
+Login.html
+<html>
+<head>
+<title>Todo Supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<form action="login.jsp">
+Enter User Name <input type="text" name="txtName"><br>
+Enter Password <input type="password" name="txtPass">
+<br>
+<input type="reset"><input type="submit" value="LOGIN">
+</form>
+</body>
+</html>
+
+Login.jsp
+<%@ page contentType="text/html" import="java.sql.*" %>
+<html><body>
+<h1>Registration JSP Page</h1>
+<%
+String uname = request.getParameter("txtName");
+String pass = request.getParameter("txtPass");
+try
+{
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/logiclogindb", "root", "root123");
+PreparedStatement stmt = con.prepareStatement("Select Password from user where username = ?");
+stmt.setString(1, uname);
+ResultSet rs = stmt.executeQuery();
+if (rs.next()) {
+if (pass.equals(rs.getString(1))) {
+out.println("<h1>~~~ Login Successful ~~~</h1>");
+}
+}
+else {
+out.println("<h1>User Name not exist!!!!</h1>");
+%>
+<jsp:include page="Register.html"></jsp:include>
+<%
+}
+} catch (Exception e) { out.println(e); }
+%>
+</body>
+</html>
+
+
+PRACTICAL NO=13
+Aim:-Create a Currency Converter application using EJB.
+
+index.html
+<html><head><title>Currency Converter</title></head>
+<body>
+<form action="ccServlet" method="Post">
+Enter Amount <input type="text" name="amt"><br>
+Select Conversion Type
+<input type="radio" name="type" value="r2d" checked> Rupees to Dollar
+<input type="radio" name="type" value="d2r"> Dollar to Rupees <br>
+<input type="submit" value="Convert">
+</form>
+</body>
+</html>
+
+ccServlet.java
+Logic 1
+@EJB CCBean obj;
+
+double amt = Double.parseDouble(request.getParameter("amt"));
+
+Logic 2
+if (request.getParameter("type").equals("r2d")) {
+out.println("<h1>" + amt + " Rupees = " + obj.r2Dollar(amt) + " Dollars </h1>");
+}
+
+if (request.getParameter("type").equals("d2r")) {
+out.println("<h1>" + amt + " Dollars = " + obj.d2Rupees(amt) + " Rupees </h1>");
+}
+
+ccBean.java
+Package mybean;
+import javax.ejb.Stateless;
+@Stateless
+public class CCBean {
+public CCBean() {}
+public double r2Dollar(double r)
+{
+return r / 65.65;
+}
+public double d2Rupees(double d) {
+return d * 65.65;
+}
+}
+
+
+PRACTICAL NO=14
+Aim:-Develop a Simple Room Reservation System Application Using EJB.
+
+Sql
+insert into roombook values("1001", "Delux", "5000", "", "", "Not Booked");
+insert into roombook values("1002", "Super Delux", "7000", "", "", "Not Booked");
+insert into roombook values("1003", "Suit", "9500", "", "", "Not Booked");
+insert into roombook values("2001", "Delux", "5000", "", "", "Not Booked");
+insert into roombook values("2002", "Super Delux", "7000", "", "", "Not Booked");
+insert into roombook values("2003", "Suit", "9500", "", "", "Not Booked");
+
+index.html
+<!DOCTYPE html>
+<html>
+<body>
+<form action="RB Servlet" method="Post">
+Select a room Type
+<input type="radio" name="txtType" value="Delux"> Delux
+<input type="radio" name="txtType" value="Super Delux"> Super Delux
+<input type="radio" name="txtType" value="Suit"> Suit <br>
+Enter Your Name <input type="text" name="txtCust"><br>
+Enter Your Mobile No <input type="text" name="txtMob"><br>
+<input type="Submit" value="Book Room">
+</form>
+</body>
+</html>
+
+package RBServlet;
+import java.io.RRBean.RRBean;
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+RBServlet.java
+@EJB RRBean obj;
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+String rt = request.getParameter("txtType");
+String cn = request.getParameter("txtCust");
+String cm = request.getParameter("txtMob");
+String msg = obj.roomBook(rt, cn, cm);
+response.setContentType("text/html; charset=UTF-8");
+try (PrintWriter out = response.getWriter()) {
+out.println("<!DOCTYPE html>");
+out.println("<html>");
+out.println("<head>");
+out.println("<title>Servlet RB Servlet</title>");
+out.println("</head>");
+out.println("<body>");
+out.println("<h1>" + msg + "</h1>");
+out.println("</body>");
+out.println("</html>");
+}
+}
+
+RRBean
+package RRBean;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.ejb.Stateless;
+
+@Stateless
+public class RRBean {
+public RRBean() {}
+public String roomBook(String rt, String cn, String cm) {
+String msg = "";
+try {
+Class 
+
+forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/roomBbook", "root", "root123");
+String query = "Select * from roombook where Room Type = ? and status = \"Not Booked\"";
+PreparedStatement pst = con.prepareStatement(query);
+pst.setString(1, rt);
+ResultSet rs = pst.executeQuery();
+if (rs.next()) {
+String rno = rs.getString(1);
+PreparedStatement stm1 = con.prepareStatement("update roombook set Cust = ? where RoomId = ?");
+String query2 = "Select * from roombook where Room Type = ? and Status = \"Not Booked\"";
+PreparedStatement stm2 = con.prepareStatement("Update roombook set mob = ? Where RoomId = ?");
+PreparedStatement stm3 = con.prepareStatement("Update roombook set status = ? where RoomId = ?");
+stm1.setString(1, cn); stm1.setString(2, rno);
+stm2.setString(1, cm); stm2.setString(2, rno);
+stm3.setString(1, "Booked"); stm3.setString(2, rno);
+stm1.executeUpdate();
+stm2.executeUpdate();
+stm3.executeUpdate();
+msg = "Room " + rno + " Booked <br> Charges = " + rs.getString(3);
+}
+else
+{
+msg = "Room " + rt + " Currently Not Available ";
+}
+} catch (Exception e) { msg = "" + e; }
+return msg;
+}
+}
+
+
+PRACRICAL NO=15
+Aim:-Develop a simple JSP application to pass values from one page to another with validations: (Name-txt, age-txt, hobbies-checkbox, email-txt, gender-radio button).
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Todo supply a title</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form action="validate.jsp">
+Enter Your Name <input type="text" name="name"><br>
+Enter Your Age <input type="text" name="age"><br>
+Select Hobbies
+<input type="checkbox" name="hob" value="Singing"> Singing
+<input type="checkbox" name="hob" value="Reading"> Reading
+<input type="checkbox" name="hob" value="Football"> Playing Football <br>
+Enter Email <input type="text" name="email"><br>
+Select Gender
+<input type="radio" name="gender" value="male"> male
+<input type="radio" name="gender" value="female"> female
+<input type="radio" name="gender" value="other"> other <br>
+<input type="hidden" name="error" value="">
+<input type="submit" value="Submit Form">
+</form>
+</body>
+</html>
+
+Validate.JSP
+<%@ Page ContentType="text/html" Page Encoding="UTF-8"
+import="mypack.*" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+</head>
+<body>
+<h1>Validation Page</h1>
+<jsp:useBean id="obj" scope="request" class="myPack.CheckerBean">
+<jsp:setProperty name="obj" property="*"/>
+</jsp:useBean>
+<% if (obj.validate()) { %>
+<jsp:forward page="Successful.jsp"/>
+<% } else { %>
+<jsp:include page="index.html"/>
+<% } %>
+<%= obj.getError() %>
+</body>
+</html>
+
+
+CheckedBean.Java
+package myPack;
+public class CheckerBean {
+private String name, age, hob, email, gender, error;
+public CheckerBean() { error = ""; }
+public void setName(String n) { name = n; }
+public void setAge(String a) { age = a; }
+public void setHob(String h) { hob = h; }
+public void setEmail(String e) { email = e; }
+public void setGender(String g) { gender = g; }
+public void setError(String e) { error = e; }
+public String getName() { return name; }
+public String getAge() { return age; }
+public String getHob() { return hob; }
+public String getEmail() { return email; }
+public String getGender() { return gender; }
+public String getError() { return error; }
+public boolean validate() {
+boolean res = true;
+if (name.trim().equals("")) { error = "<br>Enter First Name"; res = false; }
+if (age.length() > 2) {
+error += "<br> Age Invalid"; res = false;
+}
+return res;
+}
+}
+
+Successfull.jsp
+<%--
+Document : Successful
+Created on : Aug 12, 2024 11:15:50 AM
+Author : User
+--%>
+<%@ Page ContentType="text/html" Page Encoding="UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JSP Page</title>
+</head>
+<body>
+<h1>Hello User......!</h1>
+</body>
+</html>
